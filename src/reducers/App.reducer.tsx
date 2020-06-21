@@ -9,6 +9,7 @@ import {
   DOWNLOAD_REPOS_DATA_FAILED,
   LOAD_MAIN_FROM_LOCAL_SUCCESS,
   LOAD_MAIN_FROM_LOCAL,
+  LOAD_MAIN_FROM_LOCAL_FAILED,
 } from "../utils/constants";
 
 export default (
@@ -28,6 +29,7 @@ export default (
     case LOAD_MAIN_FROM_LOCAL:
       return { ...state, mainIsLoaded: false };
     case LOAD_MAIN_FROM_LOCAL_SUCCESS:
+    case LOAD_MAIN_FROM_LOCAL_FAILED:
       return { ...state, mainIsLoaded: true };
     default:
       return state;

@@ -36,7 +36,8 @@ export type AppActionType =
   | ReturnType<typeof downloadReposDataSuccessAction>
   | ReturnType<typeof downloadReposDataFailedAction>
   | ReturnType<typeof loadMainFromLocalAction>
-  | ReturnType<typeof loadMainFromLocalSuccessAction>;
+  | ReturnType<typeof loadMainFromLocalSuccessAction>
+  | ReturnType<typeof loadMainFromLocalFailedAction>;
 
 export type MainActionType =
   | ReturnType<typeof saveMainToLocalAction>
