@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import {
   changeSearchStringAction,
   changeCurrPageAction,
-  saveMainToLocalAction,
 } from "../actions/Main.actions";
 import PaginatorComponent from "../components/Paginator.component";
 
@@ -22,7 +21,6 @@ type IListReposScreen = {
   downloadListRepos: (numPage: number, startWith: string) => void;
   changeSearchString: (searchString: string) => void;
   changeCurrPage: (currPage: number) => void;
-  saveMain: (main: IMainInitialState) => void;
 };
 
 const ListReposScreen = ({
@@ -30,23 +28,21 @@ const ListReposScreen = ({
   main,
   listRepos,
   downloadListRepos,
-  changeSearchString,
-  changeCurrPage,
-  saveMain,
 }: IListReposScreen) => {
   const [searchStr, setSearchStr] = useState(main.searchString);
   useEffect(() => {
-    downloadListRepos(main.currPage, main.searchString);
-  }, [main.currPage, main.searchString, downloadListRepos]);
+    if (app.mainIsLoaded) {
+      setSearchStr(main.searchString);
+      downloadListRepos(main.currPage, main.searchString);
+    }
+  }, [app.mainIsLoaded, downloadListRepos]);
 
-  const handleChangeSearchString = () => {
-    changeSearchString(searchStr);
-    saveMain({ ...main, searchString: searchStr });
+  const handleSubmitSearch = () => {
+    downloadListRepos(1, searchStr);
   };
 
-  const handleSetCurrPage = (value: number) => {
-    changeCurrPage(value);
-    saveMain({ ...main, currPage: value });
+  const handleChangePage = (value: number) => {
+    downloadListRepos(value, searchStr);
   };
 
   return (
@@ -60,7 +56,7 @@ const ListReposScreen = ({
           value={searchStr}
         />
 
-        <button onClick={handleChangeSearchString} className="submit">
+        <button onClick={handleSubmitSearch} className="submit">
           Найти
         </button>
       </div>
@@ -68,28 +64,32 @@ const ListReposScreen = ({
       <PaginatorComponent
         selectedPage={main.currPage}
         itemsCount={main.maxCountRepos}
-        onSelect={handleSetCurrPage}
+        onSelect={handleChangePage}
       />
-      {!app.isLoading ? listRepos.map((repos: IRepos) => (
-        <div className="repos__container" key={repos.id}>
-          <Link
-            className="repos__title"
-            to={{
-              pathname: `/repos/${repos.id}`,
-              state: { reposId: repos.reposUrlApi },
-            }}
-          >
-            <h1>{repos.title}</h1>
-          </Link>
-          <div className="repos__start">Stars: {repos.numStars}</div>
-          <div className="repos__commit">
-            Last commit: {repos.dateLastCommit.toLocaleDateString()}
+      {!app.isLoading && app.mainIsLoaded ? (
+        listRepos.map((repos: IRepos) => (
+          <div className="repos__container" key={repos.id}>
+            <Link
+              className="repos__title"
+              to={{
+                pathname: `/repos/${repos.id}`,
+                state: { reposId: repos.reposUrlApi },
+              }}
+            >
+              <h1>{repos.title}</h1>
+            </Link>
+            <div className="repos__start">Stars: {repos.numStars}</div>
+            <div className="repos__commit">
+              Last commit: {repos.dateLastCommit.toLocaleDateString()}
+            </div>
+            <div className="repos__ref">
+              <a href={repos.reposUrlHtml}>{repos.reposUrlHtml}</a>
+            </div>
           </div>
-          <div className="repos__ref">
-            <a href={repos.reposUrlHtml}>{repos.reposUrlHtml}</a>
-          </div>
-        </div>
-      )) : <h1 className="error">Загрузка!</h1>}
+        ))
+      ) : (
+        <h1 className="error">Загрузка!</h1>
+      )}
     </>
   );
 };
@@ -107,7 +107,6 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(changeSearchStringAction(searchString)),
   changeCurrPage: (currPage: number) =>
     dispatch(changeCurrPageAction(currPage)),
-  saveMain: (main: IMainInitialState) => dispatch(saveMainToLocalAction(main)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListReposScreen);

@@ -6,7 +6,10 @@ import {
   IDownlaodListReposProps,
 } from "../actions/ListRepos.actions";
 import Repos from "../models/Repos.model";
-import { changeMaxCountRepos } from "../actions/Main.actions";
+import {
+  changeMaxCountRepos,
+  saveMainToLocalAction,
+} from "../actions/Main.actions";
 
 export function* downlaodListReposSaga({ payload }: IDownlaodListReposProps) {
   try {
@@ -28,8 +31,16 @@ export function* downlaodListReposSaga({ payload }: IDownlaodListReposProps) {
           item.url
         )
       );
-      yield put(downloadListReposSuccessAction(payload.numPage, listRepos));
+
+      yield put(
+        downloadListReposSuccessAction(
+          payload.startWith,
+          payload.numPage,
+          listRepos
+        )
+      );
       yield put(changeMaxCountRepos(data["total_count"]));
+      yield put(saveMainToLocalAction(payload.numPage, payload.startWith));
     } else {
       yield put(
         downloadListReposFailedAction(`Ошибка загрузки: ${response.status}`)

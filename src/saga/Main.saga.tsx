@@ -10,8 +10,13 @@ import {
 
 export function* saveMainToLocalSaga({ payload }: ISaveMainToLocalProps) {
   try {
-    console.log(payload.main);
-    yield localStorage.setItem("main", JSON.stringify(payload.main));
+    yield localStorage.setItem(
+      "main",
+      JSON.stringify({
+        currPage: payload.currPage,
+        searchString: payload.searchString,
+      })
+    );
     yield put(saveMainToLocalSuccessAction());
   } catch (e) {
     yield put(saveMainToLocalFailedAction("Ошибка сохранения Main!"));
@@ -24,7 +29,9 @@ export function* loadMainFromLocalSaga() {
     console.log(data);
 
     if (data) {
-      yield put(loadMainFromLocalSuccessAction(data));
+      yield put(
+        loadMainFromLocalSuccessAction(data.currPage, data.searchString)
+      );
     } else {
       yield put(loadMainFromLocalFailedAction("В localstorage ничего нет!"));
     }

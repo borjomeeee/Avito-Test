@@ -34,7 +34,9 @@ export type AppActionType =
   | ReturnType<typeof downloadListReposFailedAction>
   | ReturnType<typeof downloadReposDataAction>
   | ReturnType<typeof downloadReposDataSuccessAction>
-  | ReturnType<typeof downloadReposDataFailedAction>;
+  | ReturnType<typeof downloadReposDataFailedAction>
+  | ReturnType<typeof loadMainFromLocalAction>
+  | ReturnType<typeof loadMainFromLocalSuccessAction>;
 
 export type MainActionType =
   | ReturnType<typeof saveMainToLocalAction>
@@ -45,4 +47,5 @@ export type MainActionType =
   | ReturnType<typeof loadMainFromLocalFailedAction>
   | ReturnType<typeof changeCurrPageAction>
   | ReturnType<typeof changeSearchStringAction>
-  | ReturnType<typeof changeMaxCountRepos>;
+  | ReturnType<typeof changeMaxCountRepos>
+  | ReturnType<typeof downloadListReposSuccessAction>;

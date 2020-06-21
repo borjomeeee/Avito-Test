@@ -10,10 +10,9 @@ import {
   CHANGE_SEARCH_STRING,
   CHANGE_MAX_COUNT_REPOS,
 } from "../utils/constants";
-import { IMainInitialState } from "../redux/store";
 
 export interface ISaveMainToLocalProps extends IAction {
-  payload: { main: IMainInitialState };
+  payload: { currPage: number; searchString: string };
 }
 
 export const loadMainFromLocalAction = () =>
@@ -21,10 +20,13 @@ export const loadMainFromLocalAction = () =>
     type: LOAD_MAIN_FROM_LOCAL,
   } as const);
 
-export const loadMainFromLocalSuccessAction = (main: IMainInitialState) =>
+export const loadMainFromLocalSuccessAction = (
+  currPage: number,
+  searchString: string
+) =>
   ({
     type: LOAD_MAIN_FROM_LOCAL_SUCCESS,
-    payload: { main },
+    payload: { currPage, searchString },
   } as const);
 
 export const loadMainFromLocalFailedAction = (err: string) =>
@@ -33,10 +35,10 @@ export const loadMainFromLocalFailedAction = (err: string) =>
     paylaod: { err },
   } as const);
 
-export const saveMainToLocalAction = (main: IMainInitialState) =>
+export const saveMainToLocalAction = (currPage: number, searchString: string) =>
   ({
     type: SAVE_MAIN_TO_LOCAL,
-    payload: { main },
+    payload: { currPage, searchString },
   } as const);
 
 export const saveMainToLocalSuccessAction = () =>

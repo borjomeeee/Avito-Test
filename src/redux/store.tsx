@@ -10,6 +10,7 @@ import MainReducer from "../reducers/Main.reducer";
 export const initialState = {
   app: {
     isLoading: false,
+    mainIsLoaded: false,
   },
   main: {
     currPage: 1,

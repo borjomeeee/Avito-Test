@@ -7,6 +7,8 @@ import {
   DOWNLOAD_LIST_REPOS_FAILED,
   DOWNLOAD_REPOS_DATA_SUCCESS,
   DOWNLOAD_REPOS_DATA_FAILED,
+  LOAD_MAIN_FROM_LOCAL_SUCCESS,
+  LOAD_MAIN_FROM_LOCAL,
 } from "../utils/constants";
 
 export default (
@@ -23,6 +25,10 @@ export default (
     case DOWNLOAD_REPOS_DATA_SUCCESS:
     case DOWNLOAD_REPOS_DATA_FAILED:
       return { ...state, isLoading: false };
+    case LOAD_MAIN_FROM_LOCAL:
+      return { ...state, mainIsLoaded: false };
+    case LOAD_MAIN_FROM_LOCAL_SUCCESS:
+      return { ...state, mainIsLoaded: true };
     default:
       return state;
   }

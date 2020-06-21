@@ -17,12 +17,13 @@ export const downloadListReposAction = (numPage: number, startWith: string) =>
   } as const);
 
 export const downloadListReposSuccessAction = (
+  startWith: string,
   numPage: number,
   reposList: IRepos[]
 ) =>
   ({
     type: DOWNLOAD_LIST_REPOS_SUCCESS,
-    payload: { numPage, reposList },
+    payload: { startWith, numPage, reposList },
   } as const);
 
 export const downloadListReposFailedAction = (err: string) =>
